@@ -1,28 +1,64 @@
-import { useState } from "react"
+import { useState,useContext } from "react"
 import { Link } from "react-router-dom";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import Input from "../../components/Inputs/Inputs";
 import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPath";
+import {UserContext} from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import uploadImage from "../../utils/uploadImage";
 const SignUp = () => {
     const [profilePic,setProfilePic]=useState("")
     const [email,setEmail]=useState("")
     const [fullName,setFullName]=useState("")
     const [password,setPassword]=useState("")
-    const [error,setError]=useState(null)
+    const [error,setError]=useState(null);
+    const {updateUser}=useContext(UserContext);
+    const navigate=useNavigate();
     const handleSignup=async(e)=>{
         e.preventDefault();
         let profileImageURL=""
         if(!fullName){
             setError("Please enter your Fullname")
+            return;
         }
         if(!validateEmail(email)){
-            setError("Please enter a valid email address")
+            setError("Please enter a valid email address");
+            return;
         }
         if(!password){
-            setError("Please enter a password")
+            setError("Please enter a password");
+            return;
         }
-        setError("")
+        setError("");
+        try{
+            if(profilePic){
+                let imgUploadRes=await uploadImage(profilePic);
+                profileImageURL=imgUploadRes.imageUrl || "";
+            }
+            const response=await axiosInstance.post(API_PATHS.AUTH.REGISTER,{
+                email,
+                password,
+                fullName,
+                profileImageURL
+            })
+            const {token,user}=response.data
+            if(token){
+                localStorage.setItem("token",token)
+                updateUser(user);
+                navigate("/dashboard")
+            }
+        }
+        catch(error){
+            if(error.response && error.response.data.message){
+                setError(error.response.data.message)
+            }
+            else{
+                setError("Something went wrong. Please try again later.")
+            }
+        }
     }
     return ( 
         <AuthLayout>
@@ -62,7 +98,7 @@ const SignUp = () => {
                         {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
                         <button type="submit" className="btn-primary">SIGNUP</button>
                         <p className="text-[13px] text-slate-800 mt-3">
-                                Alresdy Have an Account?{" "}
+                                Already Have an Account?{" "}
                                 <Link className="font-medium text-primary decoration-0 underline" to="/login">
                                 Login
                                 </Link>
