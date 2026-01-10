@@ -4,31 +4,31 @@ import EmojiPickerPopup from "../EmojiPickerPopup";
 
 
 const AddExpenseForm = ({ onAddExpense }) => {
-    const [expense,setExpense]=useState({
+    const [income,setIncome]=useState({
         amount:"",
         date:"",
-        source:"",
+        category:"",
         icon:""
     });
     const handleChange=(key,value)=>{
-        setExpense({...expense,[key]:value});
+        setIncome({...income,[key]:value});
     }
     
     return ( 
         <div>
             <EmojiPickerPopup
-                icon={expense.icon}
+                icon={income.icon}
                 onSelect={(selectedIcon)=>handleChange("icon",selectedIcon)}
             />
             <Inputs
-                value={expense.source}
-                onChange={(e)=>handleChange("source",e.target.value)}
-                label="Expense Source"
-                placeholder="Freelance,Salary,etc"
+                value={income.category}
+                onChange={(e)=>handleChange("category",e.target.value)}
+                label="Expense Category"
+                placeholder="Rent,Groceries,etc"
                 type="text"
             ></Inputs>
             <Inputs
-                value={expense.amount}
+                value={income.amount}
                 onChange={(e)=>handleChange("amount",e.target.value)}
                 label="Amount"
                 placeholder="Enter amount"
@@ -36,7 +36,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
             >
             </Inputs>
             <Inputs
-                value={expense.date}
+                value={income.date}
                 onChange={(e)=>handleChange("date",e.target.value)}
                 label="Date"
                 placeholder=""
@@ -47,7 +47,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
                 <button 
                     type="button" 
                     className="add-btn add-btn-fill"
-                    onClick={() => onAddExpense(expense)}>
+                    onClick={() => onAddExpense(income)}>
                         Add Expense
                 </button>
             </div>

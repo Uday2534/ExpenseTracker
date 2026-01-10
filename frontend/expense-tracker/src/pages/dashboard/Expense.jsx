@@ -24,12 +24,10 @@ const Expense = () => {
         if(loading) return;
         setLoading(true);
         try{
-            const response=await axiosInstance.get(`${API_PATHS.EXPENSE.GET_ALL_EXPENSES}`);
-            const formatted = Array.isArray(response.data)
-                ? response.data
-                : response.data.data || [];
-
-            setExpenseData(formatted);
+            const response=await axiosInstance.get(`${API_PATHS.EXPENSE.GET_ALL_EXPENSE}`);
+            if(response.data){
+                setExpenseData(response.data);
+            }
         }
         catch(error){
             console.log("Something went wrong",error);
@@ -39,9 +37,9 @@ const Expense = () => {
         }
     }
     const handleAddExpense=async(expense)=>{
-        const {amount,source,date,icon}=expense;
-        if(!source.trim()){
-            toast.error("Source is required");
+        const {amount,category,date,icon}=expense;
+        if(!category || !category.trim()){
+            toast.error("Category is required");
             return;
         }
         if(!amount || isNaN(amount) || Number(amount)<=0){
@@ -53,9 +51,9 @@ const Expense = () => {
             return;
         }
         try{
-            await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME,{
+            await axiosInstance.post(API_PATHS.EXPENSE.ADD_EXPENSE,{
                 amount,
-                source,
+                category,
                 date,
                 icon
             })
@@ -70,7 +68,35 @@ const Expense = () => {
         }
     }
     const handleDownloadExpenseDetails=async()=>{
-        
+        try{
+            const response=await axiosInstance.get(API_PATHS.EXPENSE.DOWNLOAD_EXPENSE,
+                {responseType:"blob"});
+                const url=window.URL.createObjectURL(new Blob([response.data]));
+                const link=document.createElement("a");
+                link.href=url;
+                link.setAttribute("download","expense_details.xlsx");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+        }
+        catch(error){
+            console.error("error downloading expense details",error);
+            toast.error("Failed to download expense details");
+        }
+    }
+    const deleteExpense=async(id)=>{
+        try{
+            await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id));
+            setOpenDeleteAlert({show:false,data:null});
+            toast.success("Expense deleted successfully");
+            fetchExpenseData();
+        }
+        catch(error){
+            console.error("error deleting expense",
+            error.response?.data?.message || error.message
+            )
+        }
     }
     useEffect(()=>{
                 fetchExpenseData();
