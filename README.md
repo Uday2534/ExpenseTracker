@@ -92,6 +92,8 @@ Docker (optional containerization)
         |  MongoDB    |
         |  Database   |
         +-------------+
+# Screenshots
+<img width="1894" height="855" alt="Screenshot 2026-03-07 150317" src="https://github.com/user-attachments/assets/274c1841-8811-4cdc-b5a8-c043734bfd35" />
 
 LIVE DEMO
 https://expense-tracker-hzx9.vercel.app
