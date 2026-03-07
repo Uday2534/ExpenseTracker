@@ -92,23 +92,6 @@ Docker (optional containerization)
         |  MongoDB    |
         |  Database   |
         +-------------+
-# Request Flow
-User Interaction
-       |
-       v
-React Frontend
-       |
-       v
-Axios HTTP Request
-       |
-       v
-Express Backend API
-       |
-       v
-MongoDB Database
-       |
-       v
-Response returned to frontend
 
 LIVE DEMO
 https://expense-tracker-hzx9.vercel.app
