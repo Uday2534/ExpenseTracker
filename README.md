@@ -4,7 +4,7 @@ A full-stack web application for tracking personal income and expenses, visualiz
 
 The application allows users to securely log in, manage transactions, view financial summaries through charts, and download their data as CSV files.
 
-Features
+# Features
 User Authentication
 
 Secure login and registration using JWT authentication
@@ -19,7 +19,7 @@ Separate tracking for income and expenses
 
 Financial Dashboard
 
-Real-time summary of:
+# Real-time summary of:
 
 total balance
 
@@ -43,7 +43,7 @@ CSV Export
 
 Users can download their financial records for offline analysis.
 
-Tech Stack
+# Tech Stack
 Frontend
 
 React
@@ -72,7 +72,7 @@ DevOps
 
 Docker (optional containerization)
 
-System Architecture
+# System Architecture
         +-------------+
         |   Client    |
         |   (React)   |
@@ -92,7 +92,7 @@ System Architecture
         |  MongoDB    |
         |  Database   |
         +-------------+
-Request Flow
+# Request Flow
 User Interaction
        |
        v
